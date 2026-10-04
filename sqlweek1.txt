@@ -1,0 +1,41 @@
+create database INSURANCE_DATABASE;
+use INSURANCE_DATABASE;
+CREATE TABLE person (
+    driver_id INT PRIMARY KEY, driver_name VARCHAR(100), address VARCHAR(300)
+);
+CREATE TABLE car (reg_number int PRIMARY KEY, model varchar(50), reg_year int(100) );
+CREATE TABLE owns(driver_id INT, FOREIGN KEY (driver_id) REFERENCES person(driver_id), reg_number INT, FOREIGN KEY (reg_number) REFERENCES car(reg_number)
+    );
+CREATE TABLE accident ( report_num INT PRIMARY KEY, accident_date varchar(10), location varchar(100));
+CREATE TABLE participated ( driver_id INT, FOREIGN KEY (driver_id) REFERENCES person(driver_id), reg_number INT, FOREIGN KEY (reg_number) REFERENCES car(reg_number), report_num INT, FOREIGN KEY(report_num) REFERENCES accident(report_num), damage_amount INT);
+INSERT INTO person (driver_id, driver_name, address)
+VALUES
+(1, 'Rahul', 'Bangalore'),
+(2, 'Priya', 'Mumbai'),
+(3, 'Arjun', 'Delhi'),
+(4, 'Sneha', 'Chennai');
+INSERT INTO car (reg_number, model, reg_year)
+VALUES
+(05,'INNOVA',1999),
+(07,'SWIFT',1995),
+(15,'CITY',1961),
+(56,'VERNA',1996),
+(71,'XF',1992);
+INSERT INTO owns(driver_id, reg_number)
+VALUES
+(1,05),
+(2,07),
+(3,15),
+(4,56);
+INSERT INTO accident( report_num, accident_date, location)
+VALUES
+(11, 01-01-03, 'Mysore road'),
+(12,02-02-04,'South end circle'),
+(13,21-01-03,'Bull temple road'),
+(14,17-02-07,'Kanakapura road');
+INSERT INTO participated( driver_id, reg_number, report_num, damage_amount)
+VALUES
+(1,05,11,10000),
+(2,07,12,50000),
+(3,15,13,25000),
+(4,56,14,3000);
