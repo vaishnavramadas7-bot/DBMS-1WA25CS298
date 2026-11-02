@@ -1,0 +1,76 @@
+create database bank_database;
+use bank_database;
+CREATE TABLE Branch (
+    branch_name VARCHAR(100) PRIMARY KEY,
+    branch_city VARCHAR(100) NOT NULL,
+    assets DECIMAL(16,2) NOT NULL
+);
+CREATE TABLE Customer (
+    customer_name VARCHAR(120) PRIMARY KEY,
+    customer_street VARCHAR(160) NOT NULL,
+    customer_city VARCHAR(80) NOT NULL
+);
+CREATE TABLE Account (
+    account_number INT PRIMARY KEY,
+    branch_name VARCHAR(80) NOT NULL,
+    balance DECIMAL(14,2) NOT NULL,
+    FOREIGN KEY (branch_name)
+        REFERENCES Branch(branch_name) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+CREATE TABLE Depositor (
+    customer_name VARCHAR(120) NOT NULL,
+    account_number INT NOT NULL,
+    PRIMARY KEY (customer_name, account_number),
+     FOREIGN KEY (customer_name)
+        REFERENCES Customer(customer_name) ON UPDATE CASCADE ON DELETE RESTRICT,
+     FOREIGN KEY (account_number)
+        REFERENCES Account(account_number) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+CREATE TABLE Loan (
+loan_number INT(50) PRIMARY KEY,
+    loan_amount DECIMAL(5,2) NOT NULL,
+    branch_name VARCHAR(100) NOT NULL,
+    FOREIGN KEY(branch_name) REFERENCES Branch(branch_name) ON UPDATE CASCADE ON DELETE RESTRICT);
+INSERT INTO Branch (branch_name, branch_city, assets) VALUES
+('SBI_Chamrajpet', 'Bangalore', 50000.00),
+('SBI_ResidencyRoad', 'Bangalore', 10000.00),
+('SBI_ShivajiRoad', 'Bombay', 20000.00),
+('SBI_ParlimentRoad', 'Delhi', 10000.00),
+('SBI_JantarMantar', 'Delhi', 20000.00);
+INSERT INTO Customer (customer_name, customer_street, customer_city) VALUES
+('Avinash', 'Bull_Temple_road', 'Bangalore'),
+('Dinesh', 'Bannergatta_Road', 'Bangalore'),
+('Mohan', 'NationalCollege_Road', 'Bangalore'),
+('Nikhil', 'Akbar_road', 'Delhi'),
+('Ravi', 'Prithviraj_Road', 'Delhi');
+INSERT INTO Account (account_number, branch_name, balance) VALUES
+(1, 'SBI_Chamrajpet', 2000.00),
+(2, 'SBI_ResidencyRoad', 5000.50),
+(3, 'SBI_ShivajiRoad', 6000.00),
+(4, 'SBI_Parlimentroad', 9000.00),
+(5, 'SBI_Jantarmantar', 8000.00),
+(6, 'SBI_ShivajiRoad', 4000.00),
+(8, 'SBI_ResidencyRoad', 4000.00),
+(9, 'SBI_ParlimentRoad', 3000.00),
+(10, 'SBI_ResidencyRoad', 5000.00),
+(11, 'SBI_JantarMantar', 2000.00);
+INSERT INTO Depositor (customer_name, account_number) VALUES
+('Avinash', 1),
+('Dinesh', 2),
+('Nikhil', 4),
+('Ravi', 5),
+('Avinash', 8),
+('Nikhil', 9),
+('Dinesh', 10),
+('Nikhil', 11);
+ALTER TABLE Loan
+MODIFY loan_amount DECIMAL(10,2) NOT NULL;
+INSERT INTO Loan (loan_number, loan_amount, branch_name)
+VALUES
+(1, 1000.00, 'SBI_Chamrajpet'),
+(2, 2000.00, 'SBI_ResidencyRoad'),
+(3, 3000.00, 'SBI_ShivajiRoad'),
+(4, 4000.00, 'SBI_ParlimentRoad'),
+(5, 5000.00, 'SBI_JantarMantar');
+SELECT DISTINCT * FROM Loan, Account
+WHERE Loan.branch_name<>Account.branch_name;
